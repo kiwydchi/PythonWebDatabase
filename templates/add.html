@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить товар</title>
+    <style>
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: #333;
+            font-size: 20px;
+        }
+        li {
+          float: left;
+        }
+        li a {
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+        li a:hover:not(.active) {
+          background-color: #111;
+        }
+        .active {
+          background-color: darkolivegreen;
+        }
+    </style>
+</head>
+<body>
+
+<ul>
+    <li><a href="/incomings">Приход товаров</a></li>
+    <li><a href="/shipments">Товары</a></li>
+    <li><a href="/outcomings">Выдачи</a></li>
+    <li><a href="/writeoffs">Списания</a></li>
+    <li><a>   </a></li>
+    <li><a class="active" href="/add">Добавить товар</a></li>
+</ul>
+
+<form action="{{url_for('add')}}" method="post" class="form-contact">
+<p style="font-size: 18px"><label>Наименование: </label> <input type="text" name="name" value="" requied />
+    <p><input style="font-size: 16px" type="submit" value="Добавить" />
+</form>
+</body>
+</html>

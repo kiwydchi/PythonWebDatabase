@@ -1,0 +1,152 @@
+<title>Списание товаров</title>
+<style>
+    table {
+        border: 1px solid black;
+        width: 45%;
+    }
+    tr:nth-child(even) {
+            background-color: #f2f2f2;
+    }
+    .dropdown {
+      display: inline-block;
+      position: relative;
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        z-index: 1;
+        width: 100%;
+        overflow: visible;
+        background-color: whitesmoke;
+        box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.4);
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .dropdown-content a {
+      display: block;
+      color: #000000;
+      padding: 5px;
+      text-decoration: none;
+    }
+    .dropdown-content a:hover {
+      color: #FFFFFF;
+      background-color: darkolivegreen;
+    }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+        font-size: 20px;
+    }
+    li {
+      float: left;
+    }
+    li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+    li a:hover:not(.active) {
+      background-color: #111;
+    }
+    .active {
+      background-color: darkolivegreen;
+    }
+    input {
+        font-size: 16px;
+        padding: 12px 20px 12px 40px;
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+    }
+</style>
+<ul>
+    <li><a href="/incomings">Приход товаров</a></li>
+    <li><a href="/shipments">Товары</a></li>
+    <li><a href="/outcomings">Выдачи</a></li>
+    <li><a class="active" href="/writeoffs">Списания</a></li>
+    <li><a>   </a></li>
+    <li><a href="/add">Добавить товар</a></li>
+</ul>
+<p></p>
+<p>Количество товаров:</p>
+<p style="font-size: 18px" id="counter"></p>
+<p></p>
+<input type="text" id="input" onkeyup="myFunction()" placeholder="Поиск">
+<br><br>
+<table id="table">
+    <tr>
+        <th style="background-color: darkolivegreen; color: whitesmoke"> ID </th>
+        <th style="background-color: darkolivegreen; color: whitesmoke"> ID товара </th>
+        <th style="background-color: darkolivegreen; color: whitesmoke"> Наименование </th>
+        <th></th>
+    </tr>
+    {% for data in writeoffs %}
+        <tr style="font-size: 20px">
+            <td> {{ data['id'] }} </td>
+            <td> {{ data['shipment_id'] }} </td>
+            <td> {{ data['name'] }} </td>
+            <td>
+                <div class="dropdown">
+                    <button>Действие</button>
+                    <div class="dropdown-content">
+                        <a style="font-size: 16px" href="/offcomplete/{{data['shipment_id']}}" class="btn-complete">Завершить</a>
+                        <a style="font-size: 16px" href="/offdelete/{{data['id']}}" class="btn-delete">Удалить</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+<script>
+const btnDelete= document.querySelectorAll('.btn-delete');
+if(btnDelete) {
+    const btnArray = Array.from(btnDelete);
+    btnArray.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            if(!confirm('Подтвердите действие')){
+                e.preventDefault();
+            }
+        });
+    })
+}
+const btnComplete= document.querySelectorAll('.btn-complete');
+if(btnComplete) {
+    const btnArray = Array.from(btnComplete);
+    btnArray.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            if(!confirm('Подтвердите действие')){
+                e.preventDefault();
+            }
+        });
+    })
+}
+
+window.onload = function(){
+    var x = document.getElementById("table").rows.length;
+    document.getElementById('counter').innerHTML = x - 1;
+}
+
+function myFunction() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("input");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("table");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[2];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
+</script>
